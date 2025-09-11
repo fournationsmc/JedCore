@@ -33,6 +33,7 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 	private int range;
 	@Attribute(Attribute.DAMAGE)
 	private double damage;
+	private double kineticDamageFactor;
 
 	private LivingEntity target;
 	private ArrayList<Entity> affectedEntities;
@@ -70,6 +71,7 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 		power = config.getDouble("Abilities.Air.AirCombo.AirSlam.Power");
 		range = config.getInt("Abilities.Air.AirCombo.AirSlam.Range");
 		damage = config.getDouble("Abilities.Air.AirCombo.AirSlam.Damage");
+		kineticDamageFactor = config.getDouble("Abilities.Air.AirCombo.AirSlam.KineticDamageFactor");
 	}
 
 	@Override
@@ -83,7 +85,7 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 			Vector dir = player.getLocation().getDirection();
 			GeneralMethods.setVelocity(this, target, new Vector(dir.getX(), 0.05, dir.getZ()).multiply(power));
 			new HorizontalVelocityTracker(target, player, 0L, this);
-			new ThrownEntityTracker(this, target, player, 0L);
+			new ThrownEntityTracker(this, target, player, 0L, kineticDamageFactor);
 			target.setFallDistance(0);
 			if (damage > 0 && !affectedEntities.contains(target)) {
 				DamageHandler.damageEntity(target, damage, this);
@@ -190,6 +192,14 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 
 	public void setDamage(double damage) {
 		this.damage = damage;
+	}
+
+	public double getKineticDamageFactor() {
+		return kineticDamageFactor;
+	}
+
+	public void setKineticDamageFactor(double kineticDamageFactor) {
+		this.kineticDamageFactor = kineticDamageFactor;
 	}
 
 	public ArrayList<Entity> getAffectedEntities() {

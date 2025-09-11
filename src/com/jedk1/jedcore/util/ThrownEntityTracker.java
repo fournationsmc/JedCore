@@ -18,12 +18,13 @@ public class ThrownEntityTracker {
 	public static boolean collisions = JedCore.plugin.getConfig().getBoolean("Properties.MobCollisions.Enabled");
 	private long delay;
 	private final long fireTime;
+	private final double damageFactor;
 	private final Entity entity;
 	private final Player instigator;
 	private Vector thisVelocity;
 	private Ability ability;
 
-	public ThrownEntityTracker(Ability ability, Entity e, Player instigator, long delay) {
+	public ThrownEntityTracker(Ability ability, Entity e, Player instigator, long delay, double damageFactor) {
 		entity = e;
 		this.instigator = instigator;
 		fireTime = System.currentTimeMillis();
@@ -31,6 +32,7 @@ public class ThrownEntityTracker {
 		thisVelocity = e.getVelocity();
 		this.delay = delay;
 		instances.put(entity, this);
+		this.damageFactor = damageFactor;
 	}
 
 	public void update() {
@@ -54,10 +56,10 @@ public class ThrownEntityTracker {
 			for(Entity e : nearby){
 				e.setVelocity(entity.getVelocity().multiply(0.25D).add(GeneralMethods.getDirection(entity.getLocation(), e.getLocation()).multiply(2)));
 				if (e instanceof LivingEntity) {
-					DamageHandler.damageEntity(e, 2D, ability);
+					DamageHandler.damageEntity(e, 2D * damageFactor, ability);
 				}
 				if (entity instanceof LivingEntity) {
-					DamageHandler.damageEntity(entity, 1D, ability);
+					DamageHandler.damageEntity(entity, 1D * damageFactor, ability);
 					((LivingEntity) entity).setNoDamageTicks(0);
 				}
 			}

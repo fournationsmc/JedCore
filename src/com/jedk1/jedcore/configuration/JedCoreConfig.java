@@ -248,6 +248,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Power", 5.0);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Range", 8);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Damage", 0.0);
+		config.addDefault("Abilities.Air.AirCombo.AirSlam.KineticDamageFactor", 1.0);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Combination", Arrays.asList("AirSwipe:SHIFT_DOWN", "AirBlast:SHIFT_UP", "AirBlast:SHIFT_DOWN"));
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Instructions", "AirSwipe (Hold sneak) > AirBlast (Release sneak) > AirBlast (Hold sneak)");
 		
@@ -782,6 +783,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.Bloodbending.Distance", 6);
 		config.addDefault("Abilities.Water.Bloodbending.HoldTime", 10000);
 		config.addDefault("Abilities.Water.Bloodbending.Cooldown", 4000);
+		config.addDefault("Abilities.Water.Bloodbending.KineticDamageFactor", 1.0);
 		
 		config.addDefault("Abilities.Water.BloodPuppet.Enabled", true);
 		config.addDefault("Abilities.Water.BloodPuppet.Description", "This very high-level bloodbending ability lets "
