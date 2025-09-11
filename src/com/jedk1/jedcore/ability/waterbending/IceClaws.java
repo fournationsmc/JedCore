@@ -39,6 +39,7 @@ public class IceClaws extends IceAbility implements AddonAbility {
 	private double range;
 	private boolean throwable;
 	private double throwSpeed;
+	private boolean applyCooldownOnThrow;
 
 	private Location head;
 	private Location origin;
@@ -81,6 +82,7 @@ public class IceClaws extends IceAbility implements AddonAbility {
 		chargeUp = config.getLong("Abilities.Water.IceClaws.ChargeTime", 1000);
 		range = config.getDouble("Abilities.Water.IceClaws.Range", 10);
 		throwable = config.getBoolean("Abilities.Water.IceClaws.Throwable", true);
+		applyCooldownOnThrow = config.getBoolean("Abilities.Water.IceClaws.CooldownOnThrow", false);
 
 		applyModifiers();
 	}
@@ -161,6 +163,9 @@ public class IceClaws extends IceAbility implements AddonAbility {
 				ic.launched = true;
 				ic.origin = ic.player.getEyeLocation();
 				ic.head = ic.origin.clone();
+				if (ic.applyCooldownOnThrow) {
+					ic.bPlayer.addCooldown(ic, ic.throwCooldown);
+				}
 			}
 		}
 	}
@@ -195,7 +200,9 @@ public class IceClaws extends IceAbility implements AddonAbility {
 		int duration = isPunch ? punchSlowDur : throwSlowDur;
 		int level = isPunch ? punchSlownessLevel : throwSlownessLevel;
 		entity.addPotionEffect(JedCore.plugin.getPotionEffectAdapter().getSlownessEffect(duration, level));
-		bPlayer.addCooldown(this);
+		if (!applyCooldownOnThrow || isPunch) {
+			bPlayer.addCooldown(this, isPunch ? punchCooldown : throwCooldown);
+		}
 		remove();
 		DamageHandler.damageEntity(entity, isPunch ? punchDamage : throwDamage, this);
 	}

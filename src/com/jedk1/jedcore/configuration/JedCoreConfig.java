@@ -887,6 +887,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.IceClaws.Throw.SlowDuration", 5000);
 		config.addDefault("Abilities.Water.IceClaws.Throw.Speed", 1.0);
 		config.addDefault("Abilities.Water.IceClaws.AllowHandSwap", true);
+		config.addDefault("Abilities.Water.IceClaws.CooldownOnThrow", false);
 		
 		config.addDefault("Abilities.Water.IceWall.Enabled", true);
 		config.addDefault("Abilities.Water.IceWall.Description", "IceWall allows an icebender to create a wall of ice, similar to "
