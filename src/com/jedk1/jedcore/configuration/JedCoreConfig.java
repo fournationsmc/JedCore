@@ -774,6 +774,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.Bloodbending.UndeadMobs", true);
 		config.addDefault("Abilities.Water.Bloodbending.IgnoreWalls", false);
 		config.addDefault("Abilities.Water.Bloodbending.RequireBound", false);
+		config.addDefault("Abilities.Water.BloodPuppet.AffectBloodbenders", false);
 		config.addDefault("Abilities.Water.Bloodbending.Distance", 6);
 		config.addDefault("Abilities.Water.Bloodbending.HoldTime", 10000);
 		config.addDefault("Abilities.Water.Bloodbending.Cooldown", 4000);
@@ -793,6 +794,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.BloodPuppet.UndeadMobs", true);
 		config.addDefault("Abilities.Water.BloodPuppet.IgnoreWalls", false);
 		config.addDefault("Abilities.Water.BloodPuppet.RequireBound", false);
+		config.addDefault("Abilities.Water.BloodPuppet.AffectBloodbenders", false);
 		config.addDefault("Abilities.Water.BloodPuppet.Distance", 6);
 		config.addDefault("Abilities.Water.BloodPuppet.HoldTime", 10000);
 		config.addDefault("Abilities.Water.BloodPuppet.Cooldown", 4000);
