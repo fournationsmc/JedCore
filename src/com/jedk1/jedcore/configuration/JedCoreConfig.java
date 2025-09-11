@@ -968,6 +968,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.FullMoon.Modifier.Cooldown", 3);
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.FullMoon.Modifier.Duration", 2);
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.PlayerRideOwnFlow", true);
+		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.RequireAdjacentSources", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.Combination", Arrays.asList("WaterManipulation:SHIFT_DOWN", "WaterManipulation:SHIFT_UP", "Torrent:SHIFT_DOWN", "Torrent:SHIFT_UP", "Torrent:SHIFT_DOWN", "WaterManipulation:SHIFT_UP"));
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.Instructions", "WaterManipulation (Tap sneak) > Torrent (Tap sneak) > Torrent (Hold sneak) > WaterManipulation (Release sneak)");
 		
@@ -984,6 +985,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.PlantSource", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.SnowSource", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.RequireAdjacentPlants", true);
+		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.RequireAdjacentSources", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.BottleSource", false);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.AbilityCollisionRadius", 1.6);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.EntityCollisionRadius", 1.6);

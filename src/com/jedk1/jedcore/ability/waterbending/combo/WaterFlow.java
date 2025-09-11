@@ -67,6 +67,7 @@ public class WaterFlow extends WaterAbility implements AddonAbility, ComboAbilit
 	private boolean canUseBottle;
 	private boolean canUsePlants;
 	private boolean removeOnAnyDamage;
+	private boolean requireAdjacentSources;
 	
 	private long time;
 	private Location origin;
@@ -161,6 +162,7 @@ public class WaterFlow extends WaterAbility implements AddonAbility, ComboAbilit
 		avatarSize = config.getInt("Abilities.Water.WaterCombo.WaterFlow.Size.AvatarState");
 		fullMoonSizeSmall = config.getInt("Abilities.Water.WaterCombo.WaterFlow.Size.FullmoonSmall");
 		fullMoonSizeLarge = config.getInt("Abilities.Water.WaterCombo.WaterFlow.Size.FullmoonLarge");
+		requireAdjacentSources = config.getBoolean("Abilities.Water.WaterCombo.WaterFlow.RequireAdjacentSources");
 		
 		applyModifiers();
 	}
@@ -193,7 +195,7 @@ public class WaterFlow extends WaterAbility implements AddonAbility, ComboAbilit
 	private boolean prepare() {
 		sourceBlock = BlockSource.getWaterSourceBlock(player, sourceRange, ClickType.SHIFT_DOWN, true, bPlayer.canIcebend(), canUsePlants);
 		if (sourceBlock != null) {
-			boolean isGoodSource = GeneralMethods.isAdjacentToThreeOrMoreSources(sourceBlock, false) || (TempBlock.isTempBlock(sourceBlock) && WaterAbility.isBendableWaterTempBlock(sourceBlock));
+			boolean isGoodSource = !requireAdjacentSources || GeneralMethods.isAdjacentToThreeOrMoreSources(sourceBlock, false) || (TempBlock.isTempBlock(sourceBlock) && WaterAbility.isBendableWaterTempBlock(sourceBlock));
 
 			// canUsePlants needs to be checked here due to a bug with PK dynamic source caching.
 			// getWaterSourceBlock can return a plant even if canUsePlants is passed as false.
