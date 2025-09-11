@@ -886,8 +886,8 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.IceClaws.Throw.Slowness", 3);
 		config.addDefault("Abilities.Water.IceClaws.Throw.SlowDuration", 5000);
 		config.addDefault("Abilities.Water.IceClaws.Throw.Speed", 1.0);
+		config.addDefault("Abilities.Water.IceClaws.Throw.CooldownOnThrow", true);
 		config.addDefault("Abilities.Water.IceClaws.AllowHandSwap", true);
-		config.addDefault("Abilities.Water.IceClaws.CooldownOnThrow", false);
 		
 		config.addDefault("Abilities.Water.IceWall.Enabled", true);
 		config.addDefault("Abilities.Water.IceWall.Description", "IceWall allows an icebender to create a wall of ice, similar to "
@@ -903,8 +903,10 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.IceWall.MinWallHealth", 8);
 		config.addDefault("Abilities.Water.IceWall.Range", 8);
 		config.addDefault("Abilities.Water.IceWall.Damage", 4.0);
+		config.addDefault("Abilities.Water.IceWall.DamageRadius", 2.5);
 		config.addDefault("Abilities.Water.IceWall.CanBreak", true);
 		config.addDefault("Abilities.Water.IceWall.Stackable", false);
+		config.addDefault("Abilities.Water.IceWall.CanSourceWall", false);
 		config.addDefault("Abilities.Water.IceWall.LifeTime.Enabled", false);
 		config.addDefault("Abilities.Water.IceWall.LifeTime.Duration", 10000);
 		config.addDefault("Abilities.Water.IceWall.WallDamage", true);

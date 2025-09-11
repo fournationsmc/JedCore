@@ -48,6 +48,7 @@ public class IceWall extends IceAbility implements AddonAbility {
 
 	@Attribute(Attribute.DAMAGE)
 	private double damage;
+	private double damageRadius;
 
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
@@ -68,6 +69,7 @@ public class IceWall extends IceAbility implements AddonAbility {
 	public int airBlastDamage;
 
 	public boolean isWallDoneFor = false;
+	public boolean isWallBendable;
 	public List<Block> affectedBlocks = new ArrayList<>();
 
 	private boolean rising = false;
@@ -116,6 +118,7 @@ public class IceWall extends IceAbility implements AddonAbility {
 		maxHealth = config.getInt("Abilities.Water.IceWall.MaxWallHealth");
 		minHealth = config.getInt("Abilities.Water.IceWall.MinWallHealth");
 		damage = config.getDouble("Abilities.Water.IceWall.Damage");
+		damageRadius = config.getDouble("Abilities.Water.IceWall.DamageRadius");
 		cooldown = config.getLong("Abilities.Water.IceWall.Cooldown");
 		stackable = config.getBoolean("Abilities.Water.IceWall.Stackable");
 		lifetimeEnabled = config.getBoolean("Abilities.Water.IceWall.LifeTime.Enabled");
@@ -129,6 +132,7 @@ public class IceWall extends IceAbility implements AddonAbility {
 		combustionDamage = config.getInt("Abilities.Water.IceWall.WallDamage.Combustion");
 		earthSmashDamage = config.getInt("Abilities.Water.IceWall.WallDamage.EarthSmash");
 		airBlastDamage = config.getInt("Abilities.Water.IceWall.WallDamage.AirBlast");
+		isWallBendable = config.getBoolean("Abilities.Water.IceWall.CanSourceWall");
 	}
 
 	public Block getSourceBlock(Player player, int range) {
@@ -136,7 +140,6 @@ public class IceWall extends IceAbility implements AddonAbility {
 
 		for (int i = 0; i <= range; i++) {
 			Block b = player.getEyeLocation().add(direction.clone().multiply((double) i)).getBlock();
-
 			if (isBendable(b)) return b;
 		}
 
@@ -149,17 +152,9 @@ public class IceWall extends IceAbility implements AddonAbility {
 
 	public void loadAffectedBlocks(Player player, Block block) {
 		Vector direction = player.getEyeLocation().getDirection().normalize();
-
-		double ox, oy, oz;
-		ox = -direction.getZ();
-		oy = 0;
-		oz = direction.getX();
-
-		Vector orth = new Vector(ox, oy, oz);
-		orth = orth.normalize();
+		Vector orth = direction.clone().crossProduct(new Vector(0, 1, 0)).normalize();
 
 		Location origin = block.getLocation();
-
 		World world = origin.getWorld();
 
 		int width = (int) (getWidth() * getNightFactor(world));
@@ -168,7 +163,10 @@ public class IceWall extends IceAbility implements AddonAbility {
 
 		int height = minHeight;
 		boolean increasingHeight = true;
-		for (int i = -(width / 2); i < width / 2; i++) {
+
+		int half = width / 2;
+		for (int i = -half; i <= half; i++) {
+			if (width % 2 == 0 && i == half) continue;
 			Block b = world.getBlockAt(origin.clone().add(orth.clone().multiply((double) i)));
 
 			if (ElementalAbility.isAir(b.getType())) {
@@ -202,18 +200,12 @@ public class IceWall extends IceAbility implements AddonAbility {
 					}
 				}
 
-				if (height < maxHeight && increasingHeight)
-					height++;
-
-				if (i == 0)
-					increasingHeight = false;
-
-				if (!increasingHeight && height > minHeight)
-					height--;
+				if (height < maxHeight && increasingHeight) height++;
+				if (i == 0) increasingHeight = false;
+				if (!increasingHeight && height > minHeight) height--;
 
 				lastBlocks.add(b);
 			}
-
 		}
 
 		bPlayer.addCooldown(this);
@@ -232,6 +224,7 @@ public class IceWall extends IceAbility implements AddonAbility {
 
 				for (Block b : theseBlocks) {
 					TempBlock tb = new TempBlock(b, Material.ICE.createBlockData());
+					tb.setBendableSource(isWallBendable); // Using the marked experimental method to configurably mark the block as bendable source
 					tempBlocks.add(tb);
 
 					playIcebendingSound(b.getLocation());
@@ -270,7 +263,7 @@ public class IceWall extends IceAbility implements AddonAbility {
 			tb.getLocation().getWorld().spawnParticle(Particle.BLOCK_CRACK, tb.getLocation(), 5, 0, 0, 0, 0, Material.PACKED_ICE.createBlockData());
 			tb.getLocation().getWorld().playSound(tb.getLocation(), Sound.BLOCK_GLASS_BREAK, 5f, 5f);
 
-			for (Entity e : GeneralMethods.getEntitiesAroundPoint(tb.getLocation(), 2.5)) {
+			for (Entity e : GeneralMethods.getEntitiesAroundPoint(tb.getLocation(), damageRadius)) {
 				if (e.getEntityId() != player.getEntityId() && e instanceof LivingEntity) {
 					DamageHandler.damageEntity(e, damage * getNightFactor(player.getWorld()), this);
 					if (forceful) {
@@ -561,6 +554,14 @@ public class IceWall extends IceAbility implements AddonAbility {
 
 	public void setTankedDamage(int tankedDamage) {
 		this.tankedDamage = tankedDamage;
+	}
+
+	public boolean getIsWallBendable() {
+		return isWallBendable;
+	}
+
+	public void setIsWallBendable(boolean isWallBendable) {
+		this.isWallBendable = isWallBendable;
 	}
 
 	public List<Block> getLastBlocks() {

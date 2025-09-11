@@ -82,7 +82,7 @@ public class IceClaws extends IceAbility implements AddonAbility {
 		chargeUp = config.getLong("Abilities.Water.IceClaws.ChargeTime", 1000);
 		range = config.getDouble("Abilities.Water.IceClaws.Range", 10);
 		throwable = config.getBoolean("Abilities.Water.IceClaws.Throwable", true);
-		applyCooldownOnThrow = config.getBoolean("Abilities.Water.IceClaws.CooldownOnThrow", false);
+		applyCooldownOnThrow = config.getBoolean("Abilities.Water.IceClaws.Throw.CooldownOnThrow", true);
 
 		applyModifiers();
 	}
