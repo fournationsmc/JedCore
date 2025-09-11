@@ -593,6 +593,8 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.RevertDelay", 7500);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Depth", 5);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.AvatarStateDepth", 8);
+		config.addDefault("Abilities.Earth.EarthCombo.Crevice.SideLength", 1);
+		config.addDefault("Abilities.Earth.EarthCombo.Crevice.CloseWithSneak", true);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Cooldown", 10000);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Combination", Arrays.asList("Collapse:RIGHT_CLICK_BLOCK", "Shockwave:SHIFT_DOWN", "Shockwave:SHIFT_UP", "Shockwave:SHIFT_DOWN"));
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Instructions", "Collapse (Right-click a block) > Shockwave (Tap sneak) > Shockwave (Tap sneak)");
