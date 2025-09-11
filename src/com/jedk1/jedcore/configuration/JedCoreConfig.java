@@ -238,6 +238,9 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Air.SonicBlast.AbilityCollisionRadius", 1.3);
 		config.addDefault("Abilities.Air.SonicBlast.Range", 20);
 		config.addDefault("Abilities.Air.SonicBlast.ChargeSwapping", true);
+		config.addDefault("Abilities.Air.SonicBlast.Sound.Name", "ENTITY_GENERIC_EXPLODE");
+		config.addDefault("Abilities.Air.SonicBlast.Sound.Volume", 1.0);
+		config.addDefault("Abilities.Air.SonicBlast.Sound.Pitch", 0.0);
 		
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Enabled", true);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Description", "Kick your enemy up into the air then blast them away!");
