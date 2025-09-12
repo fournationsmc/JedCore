@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Crevice extends EarthAbility implements AddonAbility, ComboAbility {
@@ -43,10 +44,10 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	private double range;
 	@Attribute("Depth")
 	private int randomDepth;
+	@Attribute("Width")
+	private int width;
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
-	@Attribute("SideLength")
-	private double sideLength;
 	private boolean canCloseWithSneak;
 
 	public Crevice(Player player) {
@@ -69,7 +70,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 		randomDepth = config.getInt("Abilities.Earth.EarthCombo.Crevice.Depth");
 		avatarDepth = config.getInt("Abilities.Earth.EarthCombo.Crevice.AvatarStateDepth");
 		cooldown = config.getLong("Abilities.Earth.EarthCombo.Crevice.Cooldown");
-		sideLength = config.getDouble("Abilities.Earth.EarthCombo.Crevice.SideLength");
+		width = config.getInt("Abilities.Earth.EarthCombo.Crevice.Width");
 		canCloseWithSneak = config.getBoolean("Abilities.Earth.EarthCombo.Crevice.CloseWithSneak");
 	}
 
@@ -113,12 +114,6 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 			return;
 		}
 
-		if (canCloseWithSneak && player.isSneaking()) {
-			prepareRevert();
-			remove();
-			return;
-		}
-
 		advanceCrevice();
 	}
 
@@ -133,6 +128,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 
 		for (Block near : GeneralMethods.getBlocksAroundPoint(target.getLocation(), 2)) {
 			for (Crevice c : getAbilities(Crevice.class)) {
+				if (!c.canCloseWithSneak) continue;
 				for (List<TempBlock> tbs : c.columns) {
 					for (TempBlock tb : tbs) {
 						if (near.getLocation().equals(tb.getLocation())) {
@@ -195,9 +191,11 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 			}
 		}
 
-		removePillar(tempLoc, randInt(randomDepth + 1 - 2, randomDepth + 1 + 2));
-		removePillar(GeneralMethods.getRightSide(tempLoc, sideLength), randInt(randomDepth - 1, randomDepth + 1));
-		removePillar(GeneralMethods.getLeftSide(tempLoc, sideLength), randInt(randomDepth - 1, randomDepth + 1));
+		removePillar(tempLoc, randInt(randomDepth - 1, randomDepth + 1));
+		for (int offset = 1; offset <= width / 2; offset++) {
+			removePillar(GeneralMethods.getRightSide(tempLoc, offset), randInt(randomDepth - 1, randomDepth + 1));
+			removePillar(GeneralMethods.getLeftSide(tempLoc, offset), randInt(randomDepth - 1, randomDepth + 1));
+		}
 	}
 
 	private int randInt(int min, int max) {
@@ -369,22 +367,6 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 
 	public List<List<TempBlock>> getColumns() {
 		return columns;
-	}
-
-	public double getSideLength() {
-		return sideLength;
-	}
-
-	public void setSideLength(double sideLength) {
-		this.sideLength = sideLength;
-	}
-
-	public boolean isCanCloseWithSneak() {
-		return canCloseWithSneak;
-	}
-
-	public void setCanCloseWithSneak(boolean canCloseWithSneak) {
-		this.canCloseWithSneak = canCloseWithSneak;
 	}
 
 	@Override
