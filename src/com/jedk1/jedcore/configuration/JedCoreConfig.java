@@ -997,6 +997,7 @@ public class JedCoreConfig {
 		
 		config.addDefault("Abilities.Water.Ice.Passive.Skate.Enabled", true);
 		config.addDefault("Abilities.Water.Ice.Passive.Skate.SpeedFactor", 4);
+		config.addDefault("Abilities.Water.Ice.Passive.Skate.LeaveIceDuration", 60);
 		
 		config.addDefault("Abilities.Chi.Backstab.Enabled", true);
 		config.addDefault("Abilities.Chi.Backstab.Description", "Strike your foe in the back with a hard jab, temporariliy blocking their Chi, and "
