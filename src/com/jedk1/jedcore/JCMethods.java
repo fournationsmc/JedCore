@@ -353,6 +353,5 @@ public class JCMethods {
 		RegenTempBlock.revertAll();
 		JedCore.plugin.initializeCollisions();
 		FireTick.loadMethod();
-		IcePassive.loadConfig();
 	}
 }

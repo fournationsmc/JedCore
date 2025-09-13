@@ -40,7 +40,6 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 	private long holdTime;
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
-	private double kineticDamageFactor;
 
 	private long time;
 	public LivingEntity victim;
@@ -71,7 +70,6 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		distance = config.getInt("Abilities.Water.Bloodbending.Distance");
 		holdTime = config.getLong("Abilities.Water.Bloodbending.HoldTime");
 		cooldown = config.getLong("Abilities.Water.Bloodbending.Cooldown");
-		kineticDamageFactor = config.getDouble("Abilities.Water.Bloodbending.KineticDamageFactor");
 	}
 
 	public boolean isEligible(Player player, boolean hasAbility) {
@@ -97,7 +95,7 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 				victim.setVelocity(direction);
 
 				new HorizontalVelocityTracker(victim, player, 200L, this);
-				new ThrownEntityTracker(this, victim, player, 200L, kineticDamageFactor);
+				new ThrownEntityTracker(this, victim, player, 200L);
 			}
 			remove();
 		}
@@ -173,7 +171,7 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		else {
 			if (bPlayer.canBind(getAbility("Bloodbending")) && bPlayer.canBloodbend()) {
 				if (affectBloodbenders) {
-					return false;
+					return true;
 				}
 				return isDay(player.getWorld()) && !bPlayer.canBloodbendAtAnytime();
 			}
