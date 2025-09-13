@@ -49,6 +49,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
 	private boolean canCloseWithSneak;
+	private boolean onlyUserCanClose;
 
 	public Crevice(Player player) {
 		super(player);
@@ -72,6 +73,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 		cooldown = config.getLong("Abilities.Earth.EarthCombo.Crevice.Cooldown");
 		width = config.getInt("Abilities.Earth.EarthCombo.Crevice.Width");
 		canCloseWithSneak = config.getBoolean("Abilities.Earth.EarthCombo.Crevice.CloseWithSneak");
+		onlyUserCanClose = config.getBoolean("Abilities.Earth.EarthCombo.Crevice.OnlyUserCanClose");
 	}
 
 	private void createInstance() {
@@ -155,6 +157,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 		for (Block near : GeneralMethods.getBlocksAroundPoint(target.getLocation(), 2)) {
 			for (Crevice c : getAbilities(Crevice.class)) {
 				if (!c.canCloseWithSneak) continue;
+				if (c.onlyUserCanClose && !c.player.equals(player)) continue;
 				for (List<TempBlock> tbs : c.columns) {
 					for (TempBlock tb : tbs) {
 						if (near.getLocation().equals(tb.getLocation())) {

@@ -248,7 +248,6 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Power", 5.0);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Range", 8);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Damage", 0.0);
-		config.addDefault("Abilities.Air.AirCombo.AirSlam.KineticDamageFactor", 1.0);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Combination", Arrays.asList("AirSwipe:SHIFT_DOWN", "AirBlast:SHIFT_UP", "AirBlast:SHIFT_DOWN"));
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Instructions", "AirSwipe (Hold sneak) > AirBlast (Release sneak) > AirBlast (Hold sneak)");
 		
@@ -595,6 +594,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Width", 3);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.AvatarStateDepth", 8);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.CloseWithSneak", true);
+		config.addDefault("Abilities.Earth.EarthCombo.Crevice.OnlyUserCanClose", true);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Cooldown", 10000);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Combination", Arrays.asList("Collapse:RIGHT_CLICK_BLOCK", "Shockwave:SHIFT_DOWN", "Shockwave:SHIFT_UP", "Shockwave:SHIFT_DOWN"));
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Instructions", "Collapse (Right-click a block) > Shockwave (Tap sneak) > Shockwave (Tap sneak)");
@@ -786,12 +786,11 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.Bloodbending.UndeadMobs", true);
 		config.addDefault("Abilities.Water.Bloodbending.IgnoreWalls", false);
 		config.addDefault("Abilities.Water.Bloodbending.RequireBound", false);
-		config.addDefault("Abilities.Water.BloodPuppet.AffectBloodbenders", false);
+		config.addDefault("Abilities.Water.Bloodbending.AffectBloodbenders", false);
 		config.addDefault("Abilities.Water.Bloodbending.Distance", 6);
 		config.addDefault("Abilities.Water.Bloodbending.HoldTime", 10000);
 		config.addDefault("Abilities.Water.Bloodbending.Cooldown", 4000);
-		config.addDefault("Abilities.Water.Bloodbending.KineticDamageFactor", 1.0);
-		
+
 		config.addDefault("Abilities.Water.BloodPuppet.Enabled", true);
 		config.addDefault("Abilities.Water.BloodPuppet.Description", "This very high-level bloodbending ability lets "
 				+ "a master control entities' limbs, forcing them to "
