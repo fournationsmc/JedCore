@@ -698,6 +698,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Fire.FireBreath.Avatar.FireEnabled", true);
 		config.addDefault("Abilities.Fire.FireBreath.Melt.Enabled", true);
 		config.addDefault("Abilities.Fire.FireBreath.Melt.Chance", 3);
+		config.addDefault("Abilities.Fire.FireBreath.Melt.OnlyIce", true);
 		config.addDefault("Abilities.Fire.FireBreath.RainbowBreath.Enabled", true);
 		config.addDefault("Abilities.Fire.FireBreath.RainbowBreath.EnabledMessage", "You have bonded fire with light and can now breathe pure color.");
 		config.addDefault("Abilities.Fire.FireBreath.RainbowBreath.DisabledMessage", "You have split your bond of color and light.");
