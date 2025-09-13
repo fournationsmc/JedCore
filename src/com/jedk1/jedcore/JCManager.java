@@ -4,7 +4,7 @@ import com.jedk1.jedcore.ability.earthbending.EarthPillar;
 import com.jedk1.jedcore.ability.waterbending.IceWall;
 import com.jedk1.jedcore.ability.firebending.LightningBurst;
 import com.jedk1.jedcore.ability.waterbending.HealingWaters;
-import com.jedk1.jedcore.ability.waterbending.IcePassive;
+import com.jedk1.jedcore.ability.waterbending.passive.IcePassive;
 import com.jedk1.jedcore.util.RegenTempBlock;
 import org.bukkit.Bukkit;
 
