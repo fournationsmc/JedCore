@@ -55,6 +55,7 @@ public class WaterGimbal extends WaterAbility implements AddonAbility, ComboAbil
 	private boolean plantSourcing;
 	private boolean snowSourcing;
 	private boolean requireAdjacentPlants;
+	private boolean requireAdjacentSources;
 	private boolean canUseBottle;
 	private double abilityCollisionRadius;
 	private double entityCollisionRadius;
@@ -71,7 +72,6 @@ public class WaterGimbal extends WaterAbility implements AddonAbility, ComboAbil
 	private Location origin1;
 	private Location origin2;
 	private boolean usingBottle;
-	private boolean requireAdjacentSources;
 	
 	private final Random rand = new Random();
 

@@ -75,26 +75,52 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	}
 
 	private void createInstance() {
-		origin = player.getTargetBlock(null, 6).getLocation();
+		Block targetBlock = findValidTargetBlock(player.getTargetBlock(null, 6));
 
-		if (isEarthbendable(origin.getBlock()) && !EarthAbility.getMovedEarth().containsKey(origin.getBlock())) {
-			Location tempLoc = player.getLocation().clone();
-			tempLoc.setPitch(0);
-
-			direction = tempLoc.getDirection().clone();
-			origin.setDirection(tempLoc.getDirection()); // todo
-			location = origin.clone();
-
-			if (bPlayer.isAvatarState()) {
-				randomDepth = avatarDepth;
-			}
-
-			start();
-
-			if (!isRemoved()) {
-				bPlayer.addCooldown(this);
-			}
+		if (targetBlock == null) {
+			remove();
+			return;
 		}
+
+		origin = targetBlock.getLocation();
+		Location tempLoc = player.getLocation().clone();
+		tempLoc.setPitch(0);
+		direction = tempLoc.getDirection().clone();
+		origin.setDirection(tempLoc.getDirection()); // todo
+		location = origin.clone();
+
+		start();
+
+		if (!isRemoved()) {
+			bPlayer.addCooldown(this);
+		}
+	}
+
+	private Block findValidTargetBlock(Block initialBlock) {
+		Block targetBlock = initialBlock;
+		if (!isEarthbendable(targetBlock) || EarthAbility.getMovedEarth().containsKey(targetBlock)) {
+			return null;
+		}
+
+		if (bPlayer.isAvatarState()) {
+			randomDepth = avatarDepth;
+		}
+
+		Block check = targetBlock;
+		int steps = randomDepth;
+		while (steps-- > 0) {
+			if (isTransparent(check.getRelative(BlockFace.UP)) && isEarthbendable(check)) {
+				targetBlock = check;
+				break;
+			}
+			check = check.getRelative(BlockFace.UP);
+		}
+
+		if (isTransparent(targetBlock) || !isEarthbendable(targetBlock)) {
+			return null;
+		}
+
+		return targetBlock;
 	}
 
 	@Override
