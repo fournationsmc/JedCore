@@ -848,6 +848,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.FrostBreath.Range", 10);
 		config.addDefault("Abilities.Water.FrostBreath.Snow", true);
 		config.addDefault("Abilities.Water.FrostBreath.SnowDuration", 5000);
+		config.addDefault("Abilities.Water.FrostBreath.SnowUnderEntities", true);
 		config.addDefault("Abilities.Water.FrostBreath.BendableSnow", false);
 		config.addDefault("Abilities.Water.FrostBreath.Damage.Enabled", false);
 		config.addDefault("Abilities.Water.FrostBreath.Damage.Player", 1.0);
