@@ -77,7 +77,14 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		if (nightOnly && !isNight(player.getWorld()) && !bPlayer.canBloodbendAtAnytime()) {
 			return false;
 		}
+        if (GeneralMethods.isWeapon(this.player.getInventory().getItemInMainHand().getType())
+            || GeneralMethods.isWeapon(this.player.getInventory().getItemInOffHand().getType())) {
+            this.remove();
+            return false;
+        }
+
 		return !fullMoonOnly || isFullMoon(player.getWorld()) || bPlayer.canBloodbendAtAnytime();
+
 	}
 
 	public static void launch(Player player) {
