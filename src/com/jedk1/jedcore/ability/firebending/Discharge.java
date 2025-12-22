@@ -5,6 +5,8 @@ import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.collision.CollisionDetector;
 import com.jedk1.jedcore.collision.Sphere;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.LightningAbility;
@@ -12,9 +14,11 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.DamageHandler;
+import com.projectkorra.projectkorra.util.MovementHandler;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Discharge extends LightningAbility implements AddonAbility {
 	private final HashMap<Integer, Location> branches = new HashMap<>();
@@ -42,6 +47,10 @@ public class Discharge extends LightningAbility implements AddonAbility {
 	private boolean slotSwapping;
 	@Attribute("CollisionRadius")
 	private double entityCollisionRadius;
+	@Attribute("StunChance")
+	private double stunChance;
+	@Attribute("Stun" + Attribute.DURATION)
+	private double stunDuration;
 
 	private float soundVolume;
 	private int soundInterval;
@@ -76,6 +85,8 @@ public class Discharge extends LightningAbility implements AddonAbility {
 		duration = config.getLong("Abilities.Fire.Discharge.Duration");
 		slotSwapping = config.getBoolean("Abilities.Fire.Discharge.SlotSwapping");
 		entityCollisionRadius = config.getDouble("Abilities.Fire.Discharge.EntityCollisionRadius");
+		stunChance = getConfig().getDouble("Abilities.Fire.Discharge.Stun.Chance");
+		stunDuration = getConfig().getDouble("Abilities.Fire.Discharge.Stun.Duration");
 
 		soundVolume = (float) config.getDouble("Abilities.Fire.Discharge.Sound.Volume");
 		soundInterval = config.getInt("Abilities.Fire.Discharge.Sound.Interval");
@@ -166,6 +177,12 @@ public class Discharge extends LightningAbility implements AddonAbility {
 						entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_BEE_HURT, soundVolume, 0.2f);
 						player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BEE_HURT, soundVolume, 0.2f);
 
+						if (ThreadLocalRandom.current().nextDouble() <= this.stunChance) {
+							final MovementHandler mh = new MovementHandler((LivingEntity) entity, this);
+							if (entity instanceof Player && BendingPlayer.getBendingPlayer((Player) entity).isAvatarState())
+								return true;
+							mh.stopWithDuration((long) this.stunDuration, Element.LIGHTNING.getColor() + "* Electrocuted *"); // @Todo; make message configurable in core pk
+						}
 						return true;
 					});
 
@@ -314,6 +331,22 @@ public class Discharge extends LightningAbility implements AddonAbility {
 
 	public void setDuration(long duration) {
 		this.duration = duration;
+	}
+
+	public double getStunChance() {
+		return stunChance;
+	}
+
+	public void setStunChance(double stunChance) {
+		this.stunChance = stunChance;
+	}
+
+	public double getStunDuration() {
+		return stunDuration;
+	}
+
+	public void setStunDuration(double stunDuration) {
+		this.stunDuration = stunDuration;
 	}
 
 	public boolean isSlotSwapping() {

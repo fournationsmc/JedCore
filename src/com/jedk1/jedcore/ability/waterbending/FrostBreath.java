@@ -315,6 +315,9 @@ public class FrostBreath extends IceAbility implements AddonAbility {
 		}
 
 		private void updateFrozenBlock(Block block, Material type, long duration) {
+			if (config.snowUnderEntities && duration <= 0) {
+				return;
+			}
 			// Store the TempBlock as a FrozenBlock block so it can be reverted later.
 			for (FrozenBlock fb : frozenBlocks) {
 				if (fb.tempBlock.getBlock().equals(block)) {
@@ -416,6 +419,7 @@ public class FrostBreath extends IceAbility implements AddonAbility {
 		boolean slowEnabled;
 		long slowDuration;
 		boolean restrictBiomes;
+		boolean snowUnderEntities;
 
 		Config(Player player) {
 			ConfigurationSection config = JedCoreConfig.getConfig(player);
@@ -425,6 +429,7 @@ public class FrostBreath extends IceAbility implements AddonAbility {
 			particles = config.getInt("Abilities.Water.FrostBreath.Particles");
 			freezeDuration = config.getInt("Abilities.Water.FrostBreath.FrostDuration");
 			snowDuration = config.getInt("Abilities.Water.FrostBreath.SnowDuration");
+			snowUnderEntities = config.getBoolean("Abilities.Water.FrostBreath.SnowUnderEntities");
 			frozenWaterDuration = config.getInt("Abilities.Water.FrostBreath.FrozenWaterDuration");
 			range = config.getInt("Abilities.Water.FrostBreath.Range");
 			snowEnabled = config.getBoolean("Abilities.Water.FrostBreath.Snow");

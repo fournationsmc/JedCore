@@ -28,6 +28,9 @@ public class SonicBlast extends AirAbility implements AddonAbility {
 	private int nauseaDur;
 	private int blindDur;
 	private boolean chargeSwapping;
+	private Sound sound;
+	private float volume;
+	private float pitch;
 
 	@Attribute(Attribute.DAMAGE)
 	private double damage;
@@ -62,6 +65,14 @@ public class SonicBlast extends AirAbility implements AddonAbility {
 		chargeSwapping = config.getBoolean("Abilities.Air.SonicBlast.ChargeSwapping");
 		nauseaDur = config.getInt("Abilities.Air.SonicBlast.Effects.NauseaDuration");
 		blindDur = config.getInt("Abilities.Air.SonicBlast.Effects.BlindnessDuration");
+		volume = (float) config.getDouble("Abilities.Air.SonicBlast.Sound.Volume");
+		pitch = (float) config.getDouble("Abilities.Air.SonicBlast.Sound.Pitch");
+		try {
+			sound = Sound.valueOf(config.getString("Abilities.Air.SonicBlast.Sound.Name"));
+		} catch (final IllegalArgumentException exception) {
+			sound = Sound.ENTITY_GENERIC_EXPLODE;
+			JedCore.log.warning("Your current value for 'Properties.Air.Sound.Sound' is not valid.");
+		}
 	}
 
 	@Override
@@ -157,7 +168,7 @@ public class SonicBlast extends AirAbility implements AddonAbility {
 			location = location.add(direction.clone().multiply(0.2));
 		}
 
-		location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1, 0);
+		location.getWorld().playSound(location, sound, volume, pitch);
 	}
 	
 	@Override
