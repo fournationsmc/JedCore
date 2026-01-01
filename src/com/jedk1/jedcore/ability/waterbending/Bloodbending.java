@@ -5,15 +5,14 @@ import com.jedk1.jedcore.configuration.JedCoreConfig;
 import com.jedk1.jedcore.util.ThrownEntityTracker;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.AddonAbility;
-import com.projectkorra.projectkorra.ability.AirAbility;
-import com.projectkorra.projectkorra.ability.BloodAbility;
-import com.projectkorra.projectkorra.ability.ElementalAbility;
+import com.projectkorra.projectkorra.ability.*;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.object.HorizontalVelocityTracker;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.DamageHandler;
+import commonslang3.projectkorra.lang3.tuple.Pair;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
@@ -26,6 +25,8 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Bloodbending extends BloodAbility implements AddonAbility {
 
@@ -39,7 +40,10 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 	private long holdTime;
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
-	
+	@Attribute("DamageThreshold")
+	private double damageThreshold;
+
+
 	private long time;
 	public LivingEntity victim;
 	private BendingPlayer victimBPlayer;
@@ -68,6 +72,8 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		distance = config.getInt("Abilities.Water.Bloodbending.Distance");
 		holdTime = config.getLong("Abilities.Water.Bloodbending.HoldTime");
 		cooldown = config.getLong("Abilities.Water.Bloodbending.Cooldown");
+		damageThreshold = config.getDouble("Abilities.Water.Bloodbending.damageThreshold");
+
 	}
 
 	public boolean isEligible(Player player, boolean hasAbility) {
@@ -159,6 +165,8 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		if ((e instanceof Player) && BendingPlayer.getBendingPlayer((Player) e) != null) {
 			victimBPlayer = BendingPlayer.getBendingPlayer((Player) e);
 		}
+
+		bloodbentEntities.put(victim, Pair.of(player, damageThreshold));//Adds victim to hashmap to track hp loss
 		return true;
 	}
 	
@@ -237,9 +245,45 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		if (victim instanceof Player && victimBPlayer != null) {
 			victimBPlayer.unblockChi();
 		}
+
+		if (victim != null) {
+			bloodbentEntities.remove(victim);
+		}
+
 		super.remove();
 	}
-	
+
+
+	public static void addDamage(LivingEntity victim, double damage) {
+		Pair<Player, Double> data = bloodbentEntities.get(victim);
+		if (data == null) return;
+
+		double currentThreshold = data.getRight() - damage;
+
+		if (currentThreshold <= 0) {
+			bloodbentEntities.remove(victim);
+
+			Player caster = data.getLeft();
+			Bloodbending bb = CoreAbility.getAbility(caster, Bloodbending.class);
+			if (bb != null) {
+				bb.remove();
+			}
+
+			victim.sendMessage(ChatColor.RED + "You have taken too much damage and are no longer Bloodbent!");
+		} else {
+			// update remaining threshold
+			bloodbentEntities.put(victim, Pair.of(data.getLeft(), currentThreshold));
+		}
+	}
+
+
+	private static final Map<LivingEntity, Pair<Player, Double>> bloodbentEntities = new ConcurrentHashMap<>();
+
+	public static boolean isBloodbent(LivingEntity entity) {
+		return bloodbentEntities.containsKey(entity);
+	}
+
+
 	@Override
 	public long getCooldown() {
 		return cooldown;
