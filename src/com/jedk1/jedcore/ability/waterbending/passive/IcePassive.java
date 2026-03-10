@@ -1,4 +1,4 @@
-package com.jedk1.jedcore.ability.waterbending;
+package com.jedk1.jedcore.ability.waterbending.passive;
 
 import com.jedk1.jedcore.JCMethods;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
@@ -20,24 +20,22 @@ import java.util.Map;
 public class IcePassive {
 
 	public static void handleSkating() {
-		Map<World, Pair<Boolean, Integer>> resultCache = new HashMap<>();
+		Map<World, SkateConfig> resultCache = new HashMap<>();
 
-		for (Player player: Bukkit.getServer().getOnlinePlayers()) {
-			Pair<Boolean, Integer> result = resultCache.get(player.getWorld());
-			if (result == null) {
-				ConfigurationSection config = JedCoreConfig.getConfig(player);
+		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+			SkateConfig config = resultCache.get(player.getWorld());
+			if (config == null) {
+				ConfigurationSection section = JedCoreConfig.getConfig(player);
 
-				boolean enabled = config.getBoolean("Abilities.Water.Ice.Passive.Skate.Enabled");
-				int speedFactor = config.getInt("Abilities.Water.Ice.Passive.Skate.SpeedFactor");
+				boolean enabled = section.getBoolean("Abilities.Water.Ice.Passive.Skate.Enabled");
+				int speedFactor = section.getInt("Abilities.Water.Ice.Passive.Skate.SpeedFactor");
+				int duration = section.getInt("Abilities.Water.Ice.Passive.Skate.LeaveIceDuration", 60);
 
-				result = new Pair<>(enabled, speedFactor);
-				resultCache.put(player.getWorld(), result);
+				config = new SkateConfig(enabled, speedFactor, duration);
+				resultCache.put(player.getWorld(), config);
 			}
 
-			boolean enabled = result.first;
-			int speedFactor = result.second;
-
-			if (!enabled) continue;
+			if (!config.enabled) continue;
 			if (JCMethods.isDisabledWorld(player.getWorld())) continue;
 			if (!player.isOnGround()) continue;
 			if (!player.isSprinting()) continue;
@@ -51,19 +49,21 @@ public class IcePassive {
 
 			if (!player.hasPermission("bending.ability.IceSkate")) continue;
 
-			ParticleEffect.SNOW_SHOVEL.display(player.getLocation().clone().add(0, 0.2, 0), 15, Math.random()/2, Math.random()/2, Math.random()/2, 0);
+			ParticleEffect.SNOW_SHOVEL.display(player.getLocation().clone().add(0, 0.2, 0), 15, Math.random() / 2, Math.random() / 2, Math.random() / 2, 0);
 			player.removePotionEffect(PotionEffectType.SPEED);
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, speedFactor));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, config.duration, config.speedFactor));
 		}
 	}
 
-	private static class Pair<T, U> {
-		T first;
-		U second;
+	private static class SkateConfig {
+		final boolean enabled;
+		final int speedFactor;
+		final int duration;
 
-		Pair(T first, U second) {
-			this.first = first;
-			this.second = second;
+		SkateConfig(boolean enabled, int speedFactor, int duration) {
+			this.enabled = enabled;
+			this.speedFactor = speedFactor;
+			this.duration = duration;
 		}
 	}
 }

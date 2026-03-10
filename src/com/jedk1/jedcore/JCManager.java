@@ -4,8 +4,9 @@ import com.jedk1.jedcore.ability.earthbending.EarthPillar;
 import com.jedk1.jedcore.ability.waterbending.IceWall;
 import com.jedk1.jedcore.ability.firebending.LightningBurst;
 import com.jedk1.jedcore.ability.waterbending.HealingWaters;
-import com.jedk1.jedcore.ability.waterbending.IcePassive;
+import com.jedk1.jedcore.ability.waterbending.passive.IcePassive;
 import com.jedk1.jedcore.util.RegenTempBlock;
+import com.jedk1.jedcore.util.ThrownEntityTracker;
 import org.bukkit.Bukkit;
 
 public class JCManager implements Runnable {
@@ -23,6 +24,7 @@ public class JCManager implements Runnable {
 		IcePassive.handleSkating();
 		IceWall.progressAll();
 		EarthPillar.progressAll();
+		ThrownEntityTracker.updateAll();
 		
 		RegenTempBlock.manage();
 	}

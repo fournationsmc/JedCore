@@ -13,6 +13,7 @@ import com.projectkorra.projectkorra.ability.BlueFireAbility;
 import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.firebending.BlazeArc;
+import com.projectkorra.projectkorra.firebending.HeatControl;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.ChatUtil;
 import com.projectkorra.projectkorra.util.DamageHandler;
@@ -59,6 +60,7 @@ public class FireBreath extends FireAbility implements AddonAbility {
 	private boolean spawnFire;
 	private boolean meltEnabled;
 	private int meltChance;
+	private boolean meltOnlyIce;
 
 
 	public FireBreath(Player player) {
@@ -94,6 +96,7 @@ public class FireBreath extends FireAbility implements AddonAbility {
 		range = config.getInt("Abilities.Fire.FireBreath.Range");
 		spawnFire = config.getBoolean("Abilities.Fire.FireBreath.Avatar.FireEnabled");
 		meltEnabled = config.getBoolean("Abilities.Fire.FireBreath.Melt.Enabled");
+		meltOnlyIce = config.getBoolean("Abilities.Fire.FireBreath.Melt.OnlyIce");
 		meltChance = config.getInt("Abilities.Fire.FireBreath.Melt.Chance");
 		
 		applyModifiers();
@@ -167,12 +170,13 @@ public class FireBreath extends FireAbility implements AddonAbility {
 			damageRegion += 0.01;
 			if (meltEnabled) {
 				for (Block b : GeneralMethods.getBlocksAroundPoint(loc, damageRegion)) {
-					if (isIce(b) && rand.nextInt(meltChance) == 0) {
-						if (TempBlock.isTempBlock(b)) {
+					if (rand.nextInt(meltChance) == 0) {
+						if (!meltOnlyIce) {
+							HeatControl.melt(player, b);
+						} else if (isIce(b) && TempBlock.isTempBlock(b)) {
 							TempBlock temp = TempBlock.get(b);
-							if (PhaseChange.getFrozenBlocksMap().containsKey(temp)) {
+							if (PhaseChange.getFrozenBlocksMap().remove(temp) != null) {
 								temp.revertBlock();
-								PhaseChange.getFrozenBlocksMap().remove(temp);
 							}
 						}
 					}

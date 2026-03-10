@@ -13,6 +13,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.object.HorizontalVelocityTracker;
 import com.projectkorra.projectkorra.region.RegionProtection;
+import com.projectkorra.projectkorra.util.DamageHandler;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -30,8 +31,11 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 	private double power;
 	@Attribute(Attribute.RANGE)
 	private int range;
+	@Attribute(Attribute.DAMAGE)
+	private double damage;
 
 	private LivingEntity target;
+	private ArrayList<Entity> affectedEntities;
 
 	public AirSlam(Player player) {
 		super(player);
@@ -49,6 +53,7 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 			return;
 
 		this.target = (LivingEntity) targetEntity;
+		this.affectedEntities = new ArrayList<>();
 
 		start();
 
@@ -57,13 +62,14 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 			GeneralMethods.setVelocity(this, target, new Vector(0, 2, 0));
 		}
 	}
-	
+
 	public void setFields() {
 		ConfigurationSection config = JedCoreConfig.getConfig(this.player);
 
 		cooldown = config.getLong("Abilities.Air.AirCombo.AirSlam.Cooldown");
 		power = config.getDouble("Abilities.Air.AirCombo.AirSlam.Power");
 		range = config.getInt("Abilities.Air.AirCombo.AirSlam.Range");
+		damage = config.getDouble("Abilities.Air.AirCombo.AirSlam.Damage");
 	}
 
 	@Override
@@ -79,6 +85,10 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 			new HorizontalVelocityTracker(target, player, 0L, this);
 			new ThrownEntityTracker(this, target, player, 0L);
 			target.setFallDistance(0);
+			if (damage > 0 && !affectedEntities.contains(target)) {
+				DamageHandler.damageEntity(target, damage, this);
+				affectedEntities.add(target);
+			}
 		}
 
 		if (System.currentTimeMillis() > getStartTime() + 400) {
@@ -103,7 +113,7 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 	public String getName() {
 		return "AirSlam";
 	}
-	
+
 	@Override
 	public boolean isHiddenAbility() {
 		return false;
@@ -139,7 +149,7 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 		ConfigurationSection config = JedCoreConfig.getConfig(this.player);
 		return "* JedCore Addon *\n" + config.getString("Abilities.Air.AirCombo.AirSlam.Description");
 	}
-	
+
 	@Override
 	public String getAuthor() {
 		return JedCore.dev;
@@ -174,12 +184,24 @@ public class AirSlam extends AirAbility implements AddonAbility, ComboAbility {
 		this.target = target;
 	}
 
+	public double getDamage() {
+		return damage;
+	}
+
+	public void setDamage(double damage) {
+		this.damage = damage;
+	}
+
+	public ArrayList<Entity> getAffectedEntities() {
+		return affectedEntities;
+	}
+
 	@Override
 	public void load() {}
 
 	@Override
 	public void stop() {}
-	
+
 	@Override
 	public boolean isEnabled() {
 		ConfigurationSection config = JedCoreConfig.getConfig(this.player);
