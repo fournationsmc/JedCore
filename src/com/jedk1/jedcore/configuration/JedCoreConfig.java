@@ -238,12 +238,16 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Air.SonicBlast.AbilityCollisionRadius", 1.3);
 		config.addDefault("Abilities.Air.SonicBlast.Range", 20);
 		config.addDefault("Abilities.Air.SonicBlast.ChargeSwapping", true);
+		config.addDefault("Abilities.Air.SonicBlast.Sound.Name", "ENTITY_GENERIC_EXPLODE");
+		config.addDefault("Abilities.Air.SonicBlast.Sound.Volume", 1.0);
+		config.addDefault("Abilities.Air.SonicBlast.Sound.Pitch", 0.0);
 		
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Enabled", true);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Description", "Kick your enemy up into the air then blast them away!");
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Cooldown", 8000);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Power", 5.0);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Range", 8);
+		config.addDefault("Abilities.Air.AirCombo.AirSlam.Damage", 0.0);
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Combination", Arrays.asList("AirSwipe:SHIFT_DOWN", "AirBlast:SHIFT_UP", "AirBlast:SHIFT_DOWN"));
 		config.addDefault("Abilities.Air.AirCombo.AirSlam.Instructions", "AirSwipe (Hold sneak) > AirBlast (Release sneak) > AirBlast (Hold sneak)");
 		
@@ -588,7 +592,10 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Range", 50);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.RevertDelay", 7500);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Depth", 5);
+		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Width", 3);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.AvatarStateDepth", 8);
+		config.addDefault("Abilities.Earth.EarthCombo.Crevice.CloseWithSneak", true);
+		config.addDefault("Abilities.Earth.EarthCombo.Crevice.OnlyUserCanClose", true);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Cooldown", 10000);
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Combination", Arrays.asList("Collapse:RIGHT_CLICK_BLOCK", "Shockwave:SHIFT_DOWN", "Shockwave:SHIFT_UP", "Shockwave:SHIFT_DOWN"));
 		config.addDefault("Abilities.Earth.EarthCombo.Crevice.Instructions", "Collapse (Right-click a block) > Shockwave (Tap sneak) > Shockwave (Tap sneak)");
@@ -655,6 +662,8 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Fire.Discharge.AbilityCollisionRadius", 1.0);
 		config.addDefault("Abilities.Fire.Discharge.Sound.Volume", 0.6);
 		config.addDefault("Abilities.Fire.Discharge.Sound.Interval", 6);
+		config.addDefault("Abilities.Fire.Discharge.Stun.Chance", 0.01);
+		config.addDefault("Abilities.Fire.Discharge.Stun.Duration", 1000);
 		
 		config.addDefault("Abilities.Fire.FireBall.Enabled", true);
 		config.addDefault("Abilities.Fire.FireBall.Description", "To use, simply Left-Click to shoot a fireball at your target!");
@@ -690,6 +699,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Fire.FireBreath.Avatar.FireEnabled", true);
 		config.addDefault("Abilities.Fire.FireBreath.Melt.Enabled", true);
 		config.addDefault("Abilities.Fire.FireBreath.Melt.Chance", 3);
+		config.addDefault("Abilities.Fire.FireBreath.Melt.OnlyIce", true);
 		config.addDefault("Abilities.Fire.FireBreath.RainbowBreath.Enabled", true);
 		config.addDefault("Abilities.Fire.FireBreath.RainbowBreath.EnabledMessage", "You have bonded fire with light and can now breathe pure color.");
 		config.addDefault("Abilities.Fire.FireBreath.RainbowBreath.DisabledMessage", "You have split your bond of color and light.");
@@ -761,6 +771,8 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Fire.LightningBurst.Damage", 9.0);
 		config.addDefault("Abilities.Fire.LightningBurst.Sound.Volume", 0.6);
 		config.addDefault("Abilities.Fire.LightningBurst.Sound.Interval", 6);
+		config.addDefault("Abilities.Fire.LightningBurst.Stun.Chance", 0.1);
+		config.addDefault("Abilities.Fire.LightningBurst.Stun.Duration", 1000);
 		
 		config.addDefault("Abilities.Water.Bloodbending.Enabled", true);
 		config.addDefault("Abilities.Water.Bloodbending.Description", "This ability allows a skilled waterbender "
@@ -775,10 +787,12 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.Bloodbending.UndeadMobs", true);
 		config.addDefault("Abilities.Water.Bloodbending.IgnoreWalls", false);
 		config.addDefault("Abilities.Water.Bloodbending.RequireBound", false);
+		config.addDefault("Abilities.Water.Bloodbending.AffectBloodbenders", false);
 		config.addDefault("Abilities.Water.Bloodbending.Distance", 6);
 		config.addDefault("Abilities.Water.Bloodbending.HoldTime", 10000);
 		config.addDefault("Abilities.Water.Bloodbending.Cooldown", 4000);
 		config.addDefault("Abilities.Water.Bloodbending.damageThreshold", 2);
+
 
 		config.addDefault("Abilities.Water.BloodPuppet.Enabled", true);
 		config.addDefault("Abilities.Water.BloodPuppet.Description", "This very high-level bloodbending ability lets "
@@ -795,6 +809,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.BloodPuppet.UndeadMobs", true);
 		config.addDefault("Abilities.Water.BloodPuppet.IgnoreWalls", false);
 		config.addDefault("Abilities.Water.BloodPuppet.RequireBound", false);
+		config.addDefault("Abilities.Water.BloodPuppet.AffectBloodbenders", false);
 		config.addDefault("Abilities.Water.BloodPuppet.Distance", 6);
 		config.addDefault("Abilities.Water.BloodPuppet.HoldTime", 10000);
 		config.addDefault("Abilities.Water.BloodPuppet.Cooldown", 4000);
@@ -836,6 +851,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.FrostBreath.Range", 10);
 		config.addDefault("Abilities.Water.FrostBreath.Snow", true);
 		config.addDefault("Abilities.Water.FrostBreath.SnowDuration", 5000);
+		config.addDefault("Abilities.Water.FrostBreath.SnowUnderEntities", true);
 		config.addDefault("Abilities.Water.FrostBreath.BendableSnow", false);
 		config.addDefault("Abilities.Water.FrostBreath.Damage.Enabled", false);
 		config.addDefault("Abilities.Water.FrostBreath.Damage.Player", 1.0);
@@ -878,6 +894,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.IceClaws.Throw.Slowness", 3);
 		config.addDefault("Abilities.Water.IceClaws.Throw.SlowDuration", 5000);
 		config.addDefault("Abilities.Water.IceClaws.Throw.Speed", 1.0);
+		config.addDefault("Abilities.Water.IceClaws.Throw.CooldownOnThrow", true);
 		config.addDefault("Abilities.Water.IceClaws.AllowHandSwap", true);
 		
 		config.addDefault("Abilities.Water.IceWall.Enabled", true);
@@ -894,8 +911,10 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.IceWall.MinWallHealth", 8);
 		config.addDefault("Abilities.Water.IceWall.Range", 8);
 		config.addDefault("Abilities.Water.IceWall.Damage", 4.0);
+		config.addDefault("Abilities.Water.IceWall.DamageRadius", 2.5);
 		config.addDefault("Abilities.Water.IceWall.CanBreak", true);
 		config.addDefault("Abilities.Water.IceWall.Stackable", false);
+		config.addDefault("Abilities.Water.IceWall.CanSourceWall", false);
 		config.addDefault("Abilities.Water.IceWall.LifeTime.Enabled", false);
 		config.addDefault("Abilities.Water.IceWall.LifeTime.Duration", 10000);
 		config.addDefault("Abilities.Water.IceWall.WallDamage", true);
@@ -953,6 +972,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.FullMoon.Modifier.Cooldown", 3);
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.FullMoon.Modifier.Duration", 2);
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.PlayerRideOwnFlow", true);
+		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.RequireAdjacentSources", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.Combination", Arrays.asList("WaterManipulation:SHIFT_DOWN", "WaterManipulation:SHIFT_UP", "Torrent:SHIFT_DOWN", "Torrent:SHIFT_UP", "Torrent:SHIFT_DOWN", "WaterManipulation:SHIFT_UP"));
 		config.addDefault("Abilities.Water.WaterCombo.WaterFlow.Instructions", "WaterManipulation (Tap sneak) > Torrent (Tap sneak) > Torrent (Hold sneak) > WaterManipulation (Release sneak)");
 		
@@ -969,6 +989,7 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.PlantSource", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.SnowSource", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.RequireAdjacentPlants", true);
+		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.RequireAdjacentSources", true);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.BottleSource", false);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.AbilityCollisionRadius", 1.6);
 		config.addDefault("Abilities.Water.WaterCombo.WaterGimbal.EntityCollisionRadius", 1.6);
@@ -980,6 +1001,7 @@ public class JedCoreConfig {
 		
 		config.addDefault("Abilities.Water.Ice.Passive.Skate.Enabled", true);
 		config.addDefault("Abilities.Water.Ice.Passive.Skate.SpeedFactor", 4);
+		config.addDefault("Abilities.Water.Ice.Passive.Skate.LeaveIceDuration", 60);
 		
 		config.addDefault("Abilities.Chi.Backstab.Enabled", true);
 		config.addDefault("Abilities.Chi.Backstab.Description", "Strike your foe in the back with a hard jab, temporariliy blocking their Chi, and "

@@ -35,6 +35,7 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 	private boolean undeadMobs;
 	private boolean bloodbendingThroughBlocks;
 	private boolean requireBound;
+	private boolean affectBloodbenders;
 	private int distance;
 	@Attribute(Attribute.DURATION)
 	private long holdTime;
@@ -42,7 +43,6 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 	private long cooldown;
 	@Attribute("DamageThreshold")
 	private double damageThreshold;
-
 
 	private long time;
 	public LivingEntity victim;
@@ -69,6 +69,7 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		undeadMobs = config.getBoolean("Abilities.Water.Bloodbending.UndeadMobs");
 		bloodbendingThroughBlocks = config.getBoolean("Abilities.Water.Bloodbending.IgnoreWalls");
 		requireBound = config.getBoolean("Abilities.Water.Bloodbending.RequireBound");
+		affectBloodbenders = config.getBoolean("Abilities.Water.Bloodbending.AffectBloodbenders");
 		distance = config.getInt("Abilities.Water.Bloodbending.Distance");
 		holdTime = config.getLong("Abilities.Water.Bloodbending.HoldTime");
 		cooldown = config.getLong("Abilities.Water.Bloodbending.Cooldown");
@@ -169,7 +170,7 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 		bloodbentEntities.put(victim, Pair.of(player, damageThreshold));//Adds victim to hashmap to track hp loss
 		return true;
 	}
-	
+
 	private boolean canBeBloodbent(Player player) {
 		if (Commands.invincible.contains(player.getName())) {
 			return false;
@@ -180,8 +181,12 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 				return false;
 			}
 			return !bPlayer.getAbilities().containsValue("BloodPuppet");
-		} else {
+		}
+		else {
 			if (bPlayer.canBind(getAbility("Bloodbending")) && bPlayer.canBloodbend()) {
+				if (affectBloodbenders) {
+					return true;
+				}
 				return isDay(player.getWorld()) && !bPlayer.canBloodbendAtAnytime();
 			}
 		}
@@ -363,6 +368,14 @@ public class Bloodbending extends BloodAbility implements AddonAbility {
 
 	public void setRequireBound(boolean requireBound) {
 		this.requireBound = requireBound;
+	}
+
+	public boolean affectsBloodbenders() {
+		return affectBloodbenders;
+	}
+
+	public void setAffectBloodbenders(boolean affectBloodbenders) {
+		this.affectBloodbenders = affectBloodbenders;
 	}
 
 	public int getDistance() {

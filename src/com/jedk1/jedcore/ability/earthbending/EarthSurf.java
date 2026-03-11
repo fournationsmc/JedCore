@@ -128,7 +128,7 @@ public class EarthSurf extends EarthAbility implements AddonAbility {
 	private boolean shouldRemove() {
 		if (player == null || player.isDead() || !player.isOnline()) return true;
 		if (!bPlayer.canBendIgnoreCooldowns(this)) return true;
-		if (!isEarthbendable(player, getBlockBeneath(player.getLocation().clone()))) return true;
+		if (!isEarthbendable(player, getBlockBeneath(player.getLocation().clone())) && !MaterialUtil.isTransparent(getBlockBeneath(player.getLocation().clone()))) return true;
 		if (durationEnabled && System.currentTimeMillis() > getStartTime() + duration) return true;
 
 		return player.isSneaking();

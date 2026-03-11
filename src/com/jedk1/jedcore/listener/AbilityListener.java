@@ -61,6 +61,7 @@ import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.airbending.Suffocate;
 import com.projectkorra.projectkorra.earthbending.EarthArmor;
+import com.projectkorra.projectkorra.earthbending.Shockwave;
 import com.projectkorra.projectkorra.earthbending.lava.LavaFlow;
 import com.projectkorra.projectkorra.firebending.FireJet;
 import com.projectkorra.projectkorra.util.MovementHandler;
@@ -476,7 +477,7 @@ public class AbilityListener implements Listener {
 				if (abilClass.equals(SandBlast.class)) {
 					new SandBlast(player);
 				}
-				if (abilClass.equals(Crevice.class)) {
+				if (abilClass.equals(Shockwave.class)) {
 					Crevice.closeCrevice(player);
 				}
 				if (abilClass.equals(LavaThrow.class)) {
