@@ -791,6 +791,8 @@ public class JedCoreConfig {
 		config.addDefault("Abilities.Water.Bloodbending.Distance", 6);
 		config.addDefault("Abilities.Water.Bloodbending.HoldTime", 10000);
 		config.addDefault("Abilities.Water.Bloodbending.Cooldown", 4000);
+		config.addDefault("Abilities.Water.Bloodbending.damageThreshold", 2);
+
 
 		config.addDefault("Abilities.Water.BloodPuppet.Enabled", true);
 		config.addDefault("Abilities.Water.BloodPuppet.Description", "This very high-level bloodbending ability lets "
