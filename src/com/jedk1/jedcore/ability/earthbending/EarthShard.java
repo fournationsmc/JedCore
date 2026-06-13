@@ -116,7 +116,7 @@ public class EarthShard extends EarthAbility implements AddonAbility {
 
 	public void raiseEarthBlock(Block block) {
 		if (block == null) return;
-		if (EarthAbility.getMovedEarth().containsKey(block)) return;
+		if (com.jedk1.jedcore.util.EarthUtil.isBlockActivelyMoving(block)) return;
 		if (tblockTracker.size() >= maxShards) return;
 
 		Vector blockVector = block.getLocation().toVector().toBlockVector().setY(0);

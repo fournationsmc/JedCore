@@ -110,7 +110,7 @@ public class EarthLine extends EarthAbility implements AddonAbility {
             return false;
         } else if (TempBlock.isTempBlock(block) && !EarthAbility.isBendableEarthTempBlock(block)) {
             return false;
-        } else if (EarthAbility.getMovedEarth().containsKey(block)) {
+        } else if (com.jedk1.jedcore.util.EarthUtil.isBlockActivelyMoving(block)) {
             return false;
         }
 
