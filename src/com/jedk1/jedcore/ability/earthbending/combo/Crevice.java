@@ -2,6 +2,7 @@ package com.jedk1.jedcore.ability.earthbending.combo;
 
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.jedk1.jedcore.util.RegenTempBlock;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
@@ -72,7 +73,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	private void createInstance() {
 		origin = player.getTargetBlock(null, 6).getLocation();
 
-		if (isEarthbendable(origin.getBlock()) && !EarthAbility.getMovedEarth().containsKey(origin.getBlock())) {
+		if (isEarthbendable(origin.getBlock()) && !EarthUtil.isBlockActivelyMoving(origin.getBlock())) {
 			Location tempLoc = player.getLocation().clone();
 			tempLoc.setPitch(0);
 
@@ -208,7 +209,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 			if (i == 0 && !isTransparent(tempLoc.getBlock())) {
 				continue;
 			}
-			if (i > 0 && (!isEarthbendable(tempLoc.getBlock()) || EarthAbility.getMovedEarth().containsKey(tempLoc.getBlock()))) {
+			if (i > 0 && (!isEarthbendable(tempLoc.getBlock()) || EarthUtil.isBlockActivelyMoving(tempLoc.getBlock()))) {
 				continue;
 			}
 

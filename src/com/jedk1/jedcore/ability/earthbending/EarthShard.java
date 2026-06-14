@@ -6,6 +6,7 @@ import com.jedk1.jedcore.collision.CollisionDetector;
 import com.jedk1.jedcore.collision.CollisionUtil;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
 import com.jedk1.jedcore.util.BlockUtil;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
@@ -116,7 +117,7 @@ public class EarthShard extends EarthAbility implements AddonAbility {
 
 	public void raiseEarthBlock(Block block) {
 		if (block == null) return;
-		if (com.jedk1.jedcore.util.EarthUtil.isBlockActivelyMoving(block)) return;
+		if (EarthUtil.isBlockActivelyMoving(block)) return;
 		if (tblockTracker.size() >= maxShards) return;
 
 		Vector blockVector = block.getLocation().toVector().toBlockVector().setY(0);

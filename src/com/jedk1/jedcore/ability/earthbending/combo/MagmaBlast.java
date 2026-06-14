@@ -2,6 +2,7 @@ package com.jedk1.jedcore.ability.earthbending.combo;
 
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.jedk1.jedcore.util.MaterialUtil;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
@@ -343,7 +344,7 @@ public class MagmaBlast extends LavaAbility implements AddonAbility, ComboAbilit
 
 		for (TempBlock tempBlock : blocks) {
 			Block block = tempBlock.getLocation().getBlock();
-			if (EarthAbility.getMovedEarth().containsKey(block)) {
+			if (EarthUtil.isBlockActivelyMoving(block)) {
 				continue;
 			}
 			double currentDistSq = tempBlock.getLocation().distanceSquared(target);

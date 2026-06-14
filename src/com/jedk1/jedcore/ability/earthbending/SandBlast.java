@@ -2,6 +2,7 @@ package com.jedk1.jedcore.ability.earthbending;
 
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.ElementalAbility;
@@ -91,7 +92,7 @@ public class SandBlast extends SandAbility implements AddonAbility {
 		source = getEarthSourceBlock(sourceRange);
 
 		if (source != null) {
-			if (EarthAbility.getMovedEarth().containsKey(source)) {
+			if (EarthUtil.isBlockActivelyMoving(source)) {
 				return false;
 			}
 			if (isSand(source) && ElementalAbility.isAir(source.getRelative(BlockFace.UP).getType())) {

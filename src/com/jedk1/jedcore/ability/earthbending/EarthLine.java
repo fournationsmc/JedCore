@@ -7,6 +7,7 @@ import com.jedk1.jedcore.policies.removal.CompositeRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.IsDeadRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.IsOfflineRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.SwappedSlotsRemovalPolicy;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
@@ -110,7 +111,7 @@ public class EarthLine extends EarthAbility implements AddonAbility {
             return false;
         } else if (TempBlock.isTempBlock(block) && !EarthAbility.isBendableEarthTempBlock(block)) {
             return false;
-        } else if (com.jedk1.jedcore.util.EarthUtil.isBlockActivelyMoving(block)) {
+        } else if (EarthUtil.isBlockActivelyMoving(block)) {
             return false;
         }
 

@@ -2,6 +2,7 @@ package com.jedk1.jedcore.ability.earthbending;
 
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
@@ -82,7 +83,7 @@ public class MetalShred extends MetalAbility implements AddonAbility {
 	public boolean selectSource() {
 		Block b = BlockSource.getEarthSourceBlock(player, selectRange, ClickType.SHIFT_DOWN);
 
-		if (EarthAbility.getMovedEarth().containsKey(b))
+		if (EarthUtil.isBlockActivelyMoving(b))
 			return false;
 
 		if (!isMetal(b))
