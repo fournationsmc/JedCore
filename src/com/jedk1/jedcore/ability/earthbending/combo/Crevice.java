@@ -45,8 +45,12 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	private double range;
 	@Attribute("Depth")
 	private int randomDepth;
+	@Attribute("Width")
+	private int width;
 	@Attribute(Attribute.COOLDOWN)
 	private long cooldown;
+	private boolean canCloseWithSneak;
+	private boolean onlyUserCanClose;
 
 	public Crevice(Player player) {
 		super(player);
@@ -54,43 +58,72 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 		if (!bPlayer.canBendIgnoreBinds(this)) {
 			return;
 		}
-		
+
 		setFields();
 
 		createInstance();
 	}
-	
+
 	public void setFields() {
 		ConfigurationSection config = JedCoreConfig.getConfig(this.player);
-		
+
 		range = config.getDouble("Abilities.Earth.EarthCombo.Crevice.Range");
 		regenDelay = config.getLong("Abilities.Earth.EarthCombo.Crevice.RevertDelay");
 		randomDepth = config.getInt("Abilities.Earth.EarthCombo.Crevice.Depth");
 		avatarDepth = config.getInt("Abilities.Earth.EarthCombo.Crevice.AvatarStateDepth");
 		cooldown = config.getLong("Abilities.Earth.EarthCombo.Crevice.Cooldown");
+		width = config.getInt("Abilities.Earth.EarthCombo.Crevice.Width");
+		canCloseWithSneak = config.getBoolean("Abilities.Earth.EarthCombo.Crevice.CloseWithSneak");
+		onlyUserCanClose = config.getBoolean("Abilities.Earth.EarthCombo.Crevice.OnlyUserCanClose");
 	}
 
 	private void createInstance() {
-		origin = player.getTargetBlock(null, 6).getLocation();
+		Block targetBlock = findValidTargetBlock(player.getTargetBlock(null, 6));
 
-		if (isEarthbendable(origin.getBlock()) && !EarthUtil.isBlockActivelyMoving(origin.getBlock())) {
-			Location tempLoc = player.getLocation().clone();
-			tempLoc.setPitch(0);
-
-			direction = tempLoc.getDirection().clone();
-			origin.setDirection(tempLoc.getDirection()); // todo
-			location = origin.clone();
-
-			if (bPlayer.isAvatarState()) {
-				randomDepth = avatarDepth;
-			}
-
-			start();
-
-			if (!isRemoved()) {
-				bPlayer.addCooldown(this);
-			}
+		if (targetBlock == null) {
+			remove();
+			return;
 		}
+
+		origin = targetBlock.getLocation();
+		Location tempLoc = player.getLocation().clone();
+		tempLoc.setPitch(0);
+		direction = tempLoc.getDirection().clone();
+		origin.setDirection(tempLoc.getDirection()); // todo
+		location = origin.clone();
+
+		start();
+
+		if (!isRemoved()) {
+			bPlayer.addCooldown(this);
+		}
+	}
+
+	private Block findValidTargetBlock(Block initialBlock) {
+		Block targetBlock = initialBlock;
+		if (!isEarthbendable(targetBlock) || EarthUtil.isBlockActivelyMoving(targetBlock)) {
+			return null;
+		}
+
+		if (bPlayer.isAvatarState()) {
+			randomDepth = avatarDepth;
+		}
+
+		Block check = targetBlock;
+		int steps = randomDepth;
+		while (steps-- > 0) {
+			if (isTransparent(check.getRelative(BlockFace.UP)) && isEarthbendable(check)) {
+				targetBlock = check;
+				break;
+			}
+			check = check.getRelative(BlockFace.UP);
+		}
+
+		if (isTransparent(targetBlock) || !isEarthbendable(targetBlock)) {
+			return null;
+		}
+
+		return targetBlock;
 	}
 
 	@Override
@@ -124,6 +157,8 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 
 		for (Block near : GeneralMethods.getBlocksAroundPoint(target.getLocation(), 2)) {
 			for (Crevice c : getAbilities(Crevice.class)) {
+				if (!c.canCloseWithSneak) continue;
+				if (c.onlyUserCanClose && !c.player.equals(player)) continue;
 				for (List<TempBlock> tbs : c.columns) {
 					for (TempBlock tb : tbs) {
 						if (near.getLocation().equals(tb.getLocation())) {
@@ -186,11 +221,13 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 			}
 		}
 
-		removePillar(tempLoc, randInt(randomDepth + 1 - 2, randomDepth + 1 + 2));
-		removePillar(GeneralMethods.getRightSide(tempLoc, 1), randInt(randomDepth - 1, randomDepth + 1));
-		removePillar(GeneralMethods.getLeftSide(tempLoc, 1), randInt(randomDepth - 1, randomDepth + 1));
+		removePillar(tempLoc, randInt(randomDepth - 1, randomDepth + 1));
+		for (int offset = 1; offset <= width / 2; offset++) {
+			removePillar(GeneralMethods.getRightSide(tempLoc, offset), randInt(randomDepth - 1, randomDepth + 1));
+			removePillar(GeneralMethods.getLeftSide(tempLoc, offset), randInt(randomDepth - 1, randomDepth + 1));
+		}
 	}
-	
+
 	private int randInt(int min, int max) {
 		return ThreadLocalRandom.current().nextInt(max - min) + min; // todo: look into the necessity of this helper
 	}
@@ -255,7 +292,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	public String getName() {
 		return "Crevice";
 	}
-	
+
 	@Override
 	public boolean isHiddenAbility() {
 		return false;
@@ -289,9 +326,9 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 	@Override
 	public String getDescription() {
 		ConfigurationSection config = JedCoreConfig.getConfig(this.player);
-	   return "* JedCore Addon *\n" + config.getString("Abilities.Earth.EarthCombo.Crevice.Description");
+		return "* JedCore Addon *\n" + config.getString("Abilities.Earth.EarthCombo.Crevice.Description");
 	}
-	
+
 	@Override
 	public String getAuthor() {
 		return JedCore.dev;
@@ -367,7 +404,7 @@ public class Crevice extends EarthAbility implements AddonAbility, ComboAbility 
 
 	@Override
 	public void stop() {}
-	
+
 	@Override
 	public boolean isEnabled() {
 		ConfigurationSection config = JedCoreConfig.getConfig(this.player);

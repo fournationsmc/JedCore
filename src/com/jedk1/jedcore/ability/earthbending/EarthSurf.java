@@ -2,6 +2,7 @@ package com.jedk1.jedcore.ability.earthbending;
 
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.jedk1.jedcore.util.MaterialUtil;
 import com.jedk1.jedcore.util.RegenTempBlock;
 import com.projectkorra.projectkorra.GeneralMethods;
@@ -78,7 +79,7 @@ public class EarthSurf extends EarthAbility implements AddonAbility {
 		Block beneath = getBlockBeneath(player.getLocation().clone());
 		double maxHeight = getMaxHeight();
 
-		return isEarthbendable(player, beneath) && !isMetal(beneath) && beneath.getLocation().distanceSquared(player.getLocation()) <= maxHeight * maxHeight && !EarthAbility.getMovedEarth().containsKey(beneath);
+		return isEarthbendable(player, beneath) && !isMetal(beneath) && beneath.getLocation().distanceSquared(player.getLocation()) <= maxHeight * maxHeight && !EarthUtil.isBlockActivelyMoving(beneath);
 	}
 
 	public void setFields() {
@@ -128,7 +129,7 @@ public class EarthSurf extends EarthAbility implements AddonAbility {
 	private boolean shouldRemove() {
 		if (player == null || player.isDead() || !player.isOnline()) return true;
 		if (!bPlayer.canBendIgnoreCooldowns(this)) return true;
-		if (!isEarthbendable(player, getBlockBeneath(player.getLocation().clone()))) return true;
+		if (!isEarthbendable(player, getBlockBeneath(player.getLocation().clone())) && !MaterialUtil.isTransparent(getBlockBeneath(player.getLocation().clone()))) return true;
 		if (durationEnabled && System.currentTimeMillis() > getStartTime() + duration) return true;
 
 		return player.isSneaking();
@@ -205,7 +206,7 @@ public class EarthSurf extends EarthAbility implements AddonAbility {
 			}
 
 			Block beneath = getBlockBeneath(loc.clone().add(0, -2.9, 0).toVector().add(location.clone().getDirection().multiply(distOffset)).toLocation(player.getWorld()));
-			if (isEarthbendable(player, beneath) && beneath != null && !EarthAbility.getMovedEarth().containsKey(beneath)) {
+			if (isEarthbendable(player, beneath) && beneath != null && !EarthUtil.isBlockActivelyMoving(beneath)) {
 				Block block = loc.clone().add(0, -3.9, 0).toVector().add(location.clone().getDirection().multiply(distOffset - 0.5)).toLocation(player.getWorld()).getBlock();
 				Location temp = loc.clone().add(0, -2.9, 0).toVector().add(location.clone().getDirection().multiply(distOffset)).toLocation(player.getWorld());
 

@@ -42,6 +42,7 @@ public class BloodPuppet extends BloodAbility implements AddonAbility {
 	private boolean undeadMobs;
 	private boolean bloodPuppetThroughBlocks;
 	private boolean requireBound;
+	private boolean affectBloodbenders;
 	private int distance;
 	@Attribute(Attribute.DURATION)
 	private long holdTime;
@@ -77,6 +78,7 @@ public class BloodPuppet extends BloodAbility implements AddonAbility {
 		undeadMobs = config.getBoolean("Abilities.Water.BloodPuppet.UndeadMobs");
 		bloodPuppetThroughBlocks = config.getBoolean("Abilities.Water.BloodPuppet.IgnoreWalls");
 		requireBound = config.getBoolean("Abilities.Water.BloodPuppet.RequireBound");
+		affectBloodbenders = config.getBoolean("Abilities.Water.BloodPuppet.AffectBloodbenders");
 		distance = config.getInt("Abilities.Water.BloodPuppet.Distance");
 		holdTime = config.getLong("Abilities.Water.BloodPuppet.HoldTime");
 		cooldown = config.getLong("Abilities.Water.BloodPuppet.Cooldown");
@@ -184,6 +186,9 @@ public class BloodPuppet extends BloodAbility implements AddonAbility {
 			return !bPlayer.getAbilities().containsValue("BloodPuppet");
 		} else {
 			if (bPlayer.canBind(getAbility("Bloodbending")) && bPlayer.canBloodbend()) {
+				if (affectBloodbenders) {
+					return true;
+				}
 				return isDay(player.getWorld()) && !bPlayer.canBloodbendAtAnytime();
 			}
 		}
@@ -463,6 +468,14 @@ public class BloodPuppet extends BloodAbility implements AddonAbility {
 
 	public void setRequireBound(boolean requireBound) {
 		this.requireBound = requireBound;
+	}
+
+	public boolean affectsBloodbenders() {
+		return affectBloodbenders;
+	}
+
+	public void setAffectBloodbenders(boolean affectBloodbenders) {
+		this.affectBloodbenders = affectBloodbenders;
 	}
 
 	public int getDistance() {

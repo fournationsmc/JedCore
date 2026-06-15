@@ -224,12 +224,12 @@ public class JCListener implements Listener {
 		Player player = event.getPlayer();
 		String msg = event.getMessage();
 
-		if (msg.toLowerCase().contains("bring fire and light together as one and allow the breath of color")) {
+		if (msg.toLowerCase().contains("bring fire and light together as one and allow the breath of color") || msg.toLowerCase().contains("bring fire and light together as one and allow the breath of colour")) {
 			FireBreath.toggleRainbowBreath(player, true);
 			event.setCancelled(true);
 		}
 
-		if (msg.toLowerCase().contains("split the bond of fire and light and set the color free")) {
+		if (msg.toLowerCase().contains("split the bond of fire and light and set the color free") || msg.toLowerCase().contains("split the bond of fire and light and set the colour free")) {
 			FireBreath.toggleRainbowBreath(player, false);
 			event.setCancelled(true);
 		}

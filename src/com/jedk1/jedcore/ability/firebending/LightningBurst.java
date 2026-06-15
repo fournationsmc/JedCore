@@ -3,6 +3,8 @@ package com.jedk1.jedcore.ability.firebending;
 import com.jedk1.jedcore.JCMethods;
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.LightningAbility;
@@ -10,6 +12,7 @@ import com.projectkorra.projectkorra.attribute.Attribute;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import com.projectkorra.projectkorra.util.DamageHandler;
 
+import com.projectkorra.projectkorra.util.MovementHandler;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,6 +23,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LightningBurst extends LightningAbility implements AddonAbility {
 
@@ -34,6 +38,10 @@ public class LightningBurst extends LightningAbility implements AddonAbility {
 	private double damage;
 	@Attribute(Attribute.RADIUS)
 	private double radius;
+	@Attribute("StunChance")
+	private double stunChance;
+	@Attribute("Stun" + Attribute.DURATION)
+	private double stunDuration;
 
 	private boolean charged;
 	private static int ID = Integer.MIN_VALUE;
@@ -65,6 +73,8 @@ public class LightningBurst extends LightningAbility implements AddonAbility {
 		avatarChargeup = config.getLong("Abilities.Fire.LightningBurst.AvatarChargeUp");
 		damage = config.getDouble("Abilities.Fire.LightningBurst.Damage");
 		radius = config.getDouble("Abilities.Fire.LightningBurst.Radius");
+		stunChance = config.getDouble("Abilities.Fire.LightningBurst.Stun.Chance");
+		stunDuration = config.getDouble("Abilities.Fire.LightningBurst.Stun.Duration");
 
 		soundVolume = (float) config.getDouble("Abilities.Fire.LightningBurst.Sound.Volume");
 		soundInterval = config.getInt("Abilities.Fire.LightningBurst.Sound.Interval");
@@ -231,6 +241,22 @@ public class LightningBurst extends LightningAbility implements AddonAbility {
 		this.radius = radius;
 	}
 
+	public double getStunChance() {
+		return stunChance;
+	}
+
+	public void setStunChance(double stunChance) {
+		this.stunChance = stunChance;
+	}
+
+	public double getStunDuration() {
+		return stunDuration;
+	}
+
+	public void setStunDuration(double stunDuration) {
+		this.stunDuration = stunDuration;
+	}
+
 	public boolean isCharged() {
 		return charged;
 	}
@@ -323,6 +349,12 @@ public class LightningBurst extends LightningAbility implements AddonAbility {
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2)) {
 				if (entity instanceof LivingEntity && entity.getEntityId() != player.getEntityId() && doDamage) {
 					DamageHandler.damageEntity(entity, damage, ability);
+				}
+				if (ThreadLocalRandom.current().nextDouble() <= ability.stunChance) {
+					final MovementHandler mh = new MovementHandler((LivingEntity) entity, ability);
+					if (entity instanceof Player && BendingPlayer.getBendingPlayer((Player) entity).isAvatarState())
+						continue;
+					mh.stopWithDuration((long) ability.stunDuration, Element.LIGHTNING.getColor() + "* Electrocuted *"); // @Todo; make message configurable in core pk
 				}
 			}
 		}

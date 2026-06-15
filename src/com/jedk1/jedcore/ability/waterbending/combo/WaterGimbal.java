@@ -55,6 +55,7 @@ public class WaterGimbal extends WaterAbility implements AddonAbility, ComboAbil
 	private boolean plantSourcing;
 	private boolean snowSourcing;
 	private boolean requireAdjacentPlants;
+	private boolean requireAdjacentSources;
 	private boolean canUseBottle;
 	private double abilityCollisionRadius;
 	private double entityCollisionRadius;
@@ -119,6 +120,7 @@ public class WaterGimbal extends WaterAbility implements AddonAbility, ComboAbil
 		canUseBottle = config.getBoolean("Abilities.Water.WaterCombo.WaterGimbal.BottleSource");
 		abilityCollisionRadius = config.getDouble("Abilities.Water.WaterCombo.WaterGimbal.AbilityCollisionRadius");
 		entityCollisionRadius = config.getDouble("Abilities.Water.WaterCombo.WaterGimbal.EntityCollisionRadius");
+		requireAdjacentSources = config.getBoolean("Abilities.Water.WaterCombo.WaterGimbal.RequireMultipleAdjacentSources", false);
 		
 		applyModifiers();
 	}
@@ -200,7 +202,7 @@ public class WaterGimbal extends WaterAbility implements AddonAbility, ComboAbil
 			} else if (!ElementalAbility.isSnow(sourceBlock)) {
 				boolean isTempBlock = TempBlock.isTempBlock(sourceBlock);
 
-				if (GeneralMethods.isAdjacentToThreeOrMoreSources(sourceBlock, false) || (isTempBlock && WaterAbility.isBendableWaterTempBlock(sourceBlock))) {
+				if (!requireAdjacentSources || GeneralMethods.isAdjacentToThreeOrMoreSources(sourceBlock, false) || (isTempBlock && WaterAbility.isBendableWaterTempBlock(sourceBlock))) {
 					playFocusWaterEffect(sourceBlock);
 					sourceLoc = sourceBlock.getLocation();
 

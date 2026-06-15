@@ -38,6 +38,7 @@ import com.jedk1.jedcore.ability.firebending.FireShots;
 import com.jedk1.jedcore.ability.firebending.FireSki;
 import com.jedk1.jedcore.ability.firebending.LightningBurst;
 import com.jedk1.jedcore.ability.passive.WallRun;
+import com.jedk1.jedcore.ability.waterbending.Bloodbending;
 import com.jedk1.jedcore.ability.waterbending.BloodPuppet;
 import com.jedk1.jedcore.ability.waterbending.Drain;
 import com.jedk1.jedcore.ability.waterbending.FrostBreath;
@@ -60,24 +61,23 @@ import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.airbending.Suffocate;
 import com.projectkorra.projectkorra.earthbending.EarthArmor;
+import com.projectkorra.projectkorra.earthbending.Shockwave;
 import com.projectkorra.projectkorra.earthbending.lava.LavaFlow;
 import com.projectkorra.projectkorra.firebending.FireJet;
 import com.projectkorra.projectkorra.util.MovementHandler;
 import com.projectkorra.projectkorra.util.ParticleEffect;
-import com.projectkorra.projectkorra.waterbending.blood.Bloodbending;
+//import com.projectkorra.projectkorra.waterbending.blood.Bloodbending;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -477,7 +477,7 @@ public class AbilityListener implements Listener {
 				if (abilClass.equals(SandBlast.class)) {
 					new SandBlast(player);
 				}
-				if (abilClass.equals(Crevice.class)) {
+				if (abilClass.equals(Shockwave.class)) {
 					Crevice.closeCrevice(player);
 				}
 				if (abilClass.equals(LavaThrow.class)) {
@@ -553,6 +553,16 @@ public class AbilityListener implements Listener {
 					new SpiritBeam(player);
 				}
 			}
+		}
+	}
+	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event) {
+		Entity entity = event.getEntity();
+
+		if (!(entity instanceof LivingEntity)) return;
+
+		if (Bloodbending.isBloodbent((LivingEntity) entity)){
+			Bloodbending.addDamage((LivingEntity) entity, event.getFinalDamage());
 		}
 	}
 
