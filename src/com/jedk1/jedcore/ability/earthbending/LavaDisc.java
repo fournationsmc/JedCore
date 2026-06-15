@@ -8,6 +8,7 @@ import com.jedk1.jedcore.policies.removal.CompositeRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.IsDeadRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.IsOfflineRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.SwappedSlotsRemovalPolicy;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.jedk1.jedcore.util.RegenTempBlock;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
@@ -112,12 +113,12 @@ public class LavaDisc extends LavaAbility implements AddonAbility {
 		double sourceRange = config.getDouble("Abilities.Earth.LavaDisc.Source.Range");
 
 		Block lavaSource = getLavaSourceBlock(player, sourceRange);
-		if (lavaSource != null && !EarthAbility.getMovedEarth().containsKey(lavaSource)) {
+		if (lavaSource != null && !EarthUtil.isBlockActivelyMoving(lavaSource)) {
 			new RegenTempBlock(lavaSource, Material.LAVA, Material.LAVA.createBlockData(bd -> ((Levelled)bd).setLevel(4)), sourceRegen);
 			return true;
 		} else {
 			Block earthSource = getEarthSourceBlock(sourceRange);
-			if (earthSource != null && !lavaOnly && !EarthAbility.getMovedEarth().containsKey(earthSource)) {
+			if (earthSource != null && !lavaOnly && !EarthUtil.isBlockActivelyMoving(earthSource)) {
 				new RegenTempBlock(earthSource, Material.LAVA, Material.LAVA.createBlockData(bd -> ((Levelled)bd).setLevel(4)), sourceRegen);
 			return true;
 			}

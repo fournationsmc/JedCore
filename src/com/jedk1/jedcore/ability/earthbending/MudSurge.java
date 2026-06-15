@@ -9,6 +9,7 @@ import com.jedk1.jedcore.policies.removal.IsDeadRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.IsOfflineRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.OutOfRangeRemovalPolicy;
 import com.jedk1.jedcore.policies.removal.SwappedSlotsRemovalPolicy;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.GeneralMethods;
@@ -211,7 +212,7 @@ public class MudSurge extends EarthAbility implements AddonAbility {
 	}
 
 	private boolean isValidMudSource(Block block) {
-		return block != null && !EarthAbility.getMovedEarth().containsKey(block);
+		return block != null && !EarthUtil.isBlockActivelyMoving(block);
 	}
 
 	private void startSurge() {

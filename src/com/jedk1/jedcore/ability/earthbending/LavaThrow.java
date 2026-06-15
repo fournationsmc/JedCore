@@ -2,6 +2,7 @@ package com.jedk1.jedcore.ability.earthbending;
 
 import com.jedk1.jedcore.JedCore;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.jedk1.jedcore.util.RegenTempBlock;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
@@ -120,7 +121,7 @@ public class LavaThrow extends LavaAbility implements AddonAbility {
 	private boolean prepare() {
 		Block targetBlock = getTargetLavaBlock(sourceRange);
 
-		if (targetBlock != null && !TempBlock.isTempBlock(targetBlock) && !EarthAbility.getMovedEarth().containsKey(targetBlock)) {
+		if (targetBlock != null && !TempBlock.isTempBlock(targetBlock) && !EarthUtil.isBlockActivelyMoving(targetBlock)) {
 			selectedSource = targetBlock;
 			return true;
 		}

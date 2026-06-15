@@ -6,6 +6,7 @@ import com.jedk1.jedcore.collision.CollisionDetector;
 import com.jedk1.jedcore.collision.CollisionUtil;
 import com.jedk1.jedcore.configuration.JedCoreConfig;
 import com.jedk1.jedcore.util.BlockUtil;
+import com.jedk1.jedcore.util.EarthUtil;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.EarthAbility;
 import com.projectkorra.projectkorra.ability.util.Collision;
@@ -102,7 +103,7 @@ public class EarthKick extends EarthAbility implements AddonAbility {
 	private boolean prepare() {
 		block = player.getTargetBlock(getTransparentMaterialSet(), sourceRange);
 
-		if (EarthAbility.getMovedEarth().containsKey(block)) {
+		if (EarthUtil.isBlockActivelyMoving(block)) {
 			return false;
 		}
 
